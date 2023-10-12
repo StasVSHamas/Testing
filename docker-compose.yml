@@ -7,7 +7,5 @@ services:
       dockerfile: Dockerfile
     image: crazybird:latest
     container_name: crazybird
-      #    volumes: 
-      #      - ./app:/app
     ports:
        - "4009:4009"
