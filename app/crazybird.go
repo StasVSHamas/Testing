@@ -37,31 +37,31 @@ func main() {
 			fmt.Println("thread set to:", MaxGoroutines)
 		}
 	}
-	client := &http.Client{
-		Timeout: time.Second * 10,
-	}
 
-	resp, err := client.Get("https://fuck-hamas.com/targets.json")
-	if err != nil {
-		panic(err)
-	}
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
+	// Read targets.json from local file
+	content, err := ioutil.ReadFile("targets.json")
 	if err != nil {
 		panic(err)
 	}
 
 	var result Result
-	json.Unmarshal(body, &result)
+	// Unmarshal JSON content from local file
+	err = json.Unmarshal(content, &result)
+	if err != nil {
+		panic(err)
+	}
 
-	content, err := ioutil.ReadFile("user_agents.json")
+	content, err = ioutil.ReadFile("user_agents.json")
 	if err != nil {
 		panic(err)
 	}
 
 	var userAgents []UserAgent
 	json.Unmarshal(content, &userAgents)
+
+	client := &http.Client{
+		Timeout: time.Second * 10,
+	}
 
 	semaphore := make(chan struct{}, MaxGoroutines)
 
