@@ -55,19 +55,13 @@ func main() {
 	var result Result
 	json.Unmarshal(body, &result)
 
-	resp, err = client.Get("https://pastebin.com/raw/hAgQ9qwJ")
-	if err != nil {
-		panic(err)
-	}
-	defer resp.Body.Close()
-
-	body, err = ioutil.ReadAll(resp.Body)
+	content, err := ioutil.ReadFile("user_agents.json")
 	if err != nil {
 		panic(err)
 	}
 
 	var userAgents []UserAgent
-	json.Unmarshal(body, &userAgents)
+	json.Unmarshal(content, &userAgents)
 
 	semaphore := make(chan struct{}, MaxGoroutines)
 
@@ -82,11 +76,11 @@ func main() {
 
 	for {
 		for _, url := range result.URLs {
-			semaphore <- struct{}{} 
+			semaphore <- struct{}{}
 			go func(url string) {
-				defer func() { <-semaphore }() 
+				defer func() { <-semaphore }()
 
-				randomURL := generateRandomURL(url) 
+				randomURL := generateRandomURL(url)
 				req, err := http.NewRequest("GET", randomURL, nil)
 				if err != nil {
 					return
