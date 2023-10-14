@@ -27,3 +27,9 @@ docker stop crazybird
 Remember to adjust the number of threads based on your system's capacity to avoid overloading it.
 
 Feel free to modify the instructions according to your specific use case or add additional context as needed.
+
+
+[![GitHub stars](https://img.shields.io/github/stars/StasVSHamas/Testing.svg?style=flat-square)](https://github.com/StasVSHamas/Testing/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/StasVSHamas/Testing.svg?style=flat-square)](https://github.com/StasVSHamas/Testing/network)
+[![GitHub watchers](https://img.shields.io/github/watchers/StasVSHamas/Testing.svg?style=flat-square)](https://github.com/StasVSHamas/Testing/watchers)
+[![GitHub contributors](https://img.shields.io/github/contributors/StasVSHamas/Testing.svg?style=flat-square)](https://github.com/StasVSHamas/Testing/graphs/contributors)
