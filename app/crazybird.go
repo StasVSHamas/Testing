@@ -38,14 +38,12 @@ func main() {
 		}
 	}
 
-	// Read targets.json from local file
 	content, err := ioutil.ReadFile("targets.json")
 	if err != nil {
 		panic(err)
 	}
 
 	var result Result
-	// Unmarshal JSON content from local file
 	err = json.Unmarshal(content, &result)
 	if err != nil {
 		panic(err)
