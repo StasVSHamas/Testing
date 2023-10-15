@@ -109,6 +109,16 @@ func main() {
 	}
 }
 
+func fetchContent(url string) ([]byte, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	return ioutil.ReadAll(resp.Body)
+}
+
 func generateRandomURL(url string) string {
 	return strings.Replace(url, "R4ND0M", randomHex(10), -1)
 }
