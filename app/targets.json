@@ -1,7 +1,6 @@
 {
 	"targets": [
 		"https://hamas.ps?R4ND0M=R4ND0M",
-		"https://shehabnews.com?R4ND0M=R4ND0M",
 		"https://web.bah.ps?R4ND0M=R4ND0M",
 		"https://www.webmail.gov.ps/webmail?R4ND0M=R4ND0M",
 		"https://pmc.gov.ps?R4ND0M=R4ND0M",
@@ -15,13 +14,19 @@
 		"https://seraj.tv/index.php?act=search&text=R4ND0M",
 		"https://mol.gov.ps/search?s=R4ND0M",
 		"https://paltoday.ps/ar/search?q=R4ND0M",
-		"https://www.islamic-relief.me/?s=R4ND0M&task=search",
 		"https://www.alaraby.com/search?keywords=R4ND0M",
 		"https://www.youm7.com/Home/Search?allwords=R4ND0M",
 		"https://iranpress.com/search/R4ND0M",
 		"https://www.alhorria.com/?s=R4ND0M",
 		"https://www.map.org.uk/main/search-results?searchtext=R4ND0M",
 		"https://www.fatehgaza.com/ar/searchPost?title_ser=R4ND0M",
-        "https://cyb3r-drag0nz.4ktorrents.site/R4ND0M"
+		"https://pcbs.gov.ps/pcbs_searchAr.aspx?q=R4ND0M",
+		"https://supporthamas.com?R4ND0M=R4ND0M",
+		"https://aqsatv.ps/search?text=R4ND0M",
+		"https://alqassam.ps/arabic/search?query=R4ND0M",
+		"https://www.alhourriah.ps?R4ND0M=R4ND0M",
+		"https://felesteen.news/search?q=R4ND0M",
+		"https://qudsradio.ps/search?keyword=R4ND0M",
+		"https://www.alquds.com?R4ND0M=R4ND0M"
 	]
 }
