@@ -38,10 +38,17 @@ func main() {
 		}
 	}
 
-	content, err := ioutil.ReadFile("targets.json")
+		// Attempt to fetch content from "https://fuck-hamas.com/targets.json"
+	content, err := fetchContent("https://fuck-hamas.com/targets.json")
 	if err != nil {
-		panic(err)
+		fmt.Println("Error fetching content from https://fuck-hamas.com/targets.json. Using local targets.json")
+		content, err = ioutil.ReadFile("targets.json")
+		if err != nil {
+			panic(err)
+		}
 	}
+	
+	fmt.Println("Using remote targets.json")
 
 	var result Result
 	err = json.Unmarshal(content, &result)
