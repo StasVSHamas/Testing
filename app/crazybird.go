@@ -46,9 +46,10 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-	}
+	} else {	
+		fmt.Println("Using remote targets.json")
+	}		
 	
-	fmt.Println("Using remote targets.json")
 
 	var result Result
 	err = json.Unmarshal(content, &result)
